@@ -1,0 +1,48 @@
+.navbar {
+  height: 60px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 25px;
+}
+
+.navbar-title h3 {
+  margin: 0;
+  color: #1e293b;
+  font-size: 1.1rem;
+}
+
+.navbar-user {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.user-name {
+  font-size: 0.9rem;
+  color: #475569;
+  font-weight: 500;
+}
+
+/* 👇 BOTÓN ACTUALIZADO AL VERDE DEL LOGIN 👇 */
+.logout-btn {
+  padding: 8px 14px;
+  background-color: #2e7d32; /* Verde del botón de Iniciar Sesión */
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.logout-btn:hover {
+  background-color: #1b5e20; /* Verde más oscuro al pasar el cursor */
+}
+
+.logout-btn:active {
+  transform: scale(0.98);
+}

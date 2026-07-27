@@ -1,11 +1,12 @@
 import React from 'react';
-import Login from './components/Login';
+import Layout from './components/Layout';
 
 function App() {
   return (
-    <div>
-      <Login />
-    </div>
+    <Layout>
+      <h2>Bienvenido al Dashboard de RRHH</h2>
+      <p>Aquí irá el contenido principal según el módulo seleccionado.</p>
+    </Layout>
   );
 }
 

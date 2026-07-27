@@ -1,0 +1,17 @@
+.layout-container {
+  display: flex;
+  min-height: 100vh;
+  /* Cambio al fondo verde suave del login */
+  background-color: #b2d8b2; 
+}
+
+.layout-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.layout-content {
+  padding: 25px;
+  flex: 1;
+}
