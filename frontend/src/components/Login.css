@@ -1,104 +1,105 @@
-/* Login.css */
-.login-wrapper {
+/* Contenedor principal que ocupa toda la pantalla y centra la tarjeta */
+.login-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  /* Cambio de color de fondo al verde de la imagen */
-  background-color: #b2d8b2; 
-  padding: 20px;
+  width: 100vw;
+  background-color: #b2d8b2; /* Fondo verde claro suave del sistema */
   box-sizing: border-box;
 }
 
+/* Tarjeta flotante del Login (Altura compacta) */
 .login-card {
   background-color: #ffffff;
-  padding: 40px 30px;
+  padding: 20px 28px; /* Reducido el espacio vertical (arriba/abajo) */
   border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   width: 100%;
-  max-width: 400px;
+  max-width: 320px;
+  text-align: center;
 }
 
+/* Cabecera con Logo y Título */
 .login-header {
-  text-align: center;
-  margin-bottom: 25px;
+  margin-bottom: 12px;
 }
 
 .login-logo {
-  
-  width: auto;         
-  max-width: 250px;    
-  height: 100px;       
-  
-  margin-bottom: 15px; 
-  display: block;      
-  margin-left: auto;   
-  margin-right: auto;
+  max-width: 110px; /* Reducida ligeramente la altura del logo */
+  height: auto;
+  margin-bottom: 6px;
+  object-fit: contain;
 }
 
 .login-header h2 {
-  margin: 0;
-  color: #0f172a;
-  font-size: 1.6rem;
+  margin: 0 0 4px 0;
+  color: #1b382b;
+  font-size: 1.3rem;
   font-weight: 700;
 }
 
 .login-header p {
-  margin-top: 6px;
-  color: #b2d8b2;
-  font-size: 0.9rem;
+  margin: 0;
+  color: #557c66;
+  font-size: 0.8rem;
 }
 
-.input-group {
-  margin-bottom: 20px;
+/* Formulario e Inputs */
+.login-form {
   display: flex;
   flex-direction: column;
+  gap: 10px; /* Reducida la separación entre campos */
   text-align: left;
 }
 
-.input-group label {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #334155;
-  margin-bottom: 6px;
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.input-group input {
-  padding: 12px 14px;
-  border-radius: 6px;
+.form-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #2d5442;
+}
+
+.form-group input {
+  padding: 8px 10px; /* Inputs más delgados */
   border: 1px solid #cbd5e1;
-  font-size: 0.95rem;
+  border-radius: 6px;
+  font-size: 0.88rem;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.input-group input:focus {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-}
-
-.login-button {
+  box-sizing: border-box;
   width: 100%;
-  padding: 12px;
-  background-color: #2e7d32; /* Verde obscuro en contraste */
+}
+
+.form-group input:focus {
+  border-color: #2e7d32;
+  box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.15);
+}
+
+/* Botón de Iniciar Sesión */
+.login-btn {
+  margin-top: 4px;
+  padding: 9px;
+  background-color: #2e7d32;
   color: #ffffff;
   border: none;
   border-radius: 6px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.2s, transform 0.1s;
-  margin-top: 10px;
+  width: 100%;
 }
 
-.login-button:hover {
+.login-btn:hover {
   background-color: #1b5e20;
 }
 
-.login-button:hover {
-  background-color: #1d4ed8;
-}
-
-.login-button:active {
-  transform: scale(0.98);
+.login-btn:active {
+  transform: scale(0.99);
 }

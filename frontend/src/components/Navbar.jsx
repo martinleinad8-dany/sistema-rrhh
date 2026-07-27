@@ -1,7 +1,14 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Navbar.css';
 
 function Navbar() {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    navigate('/login');
+  };
+
   return (
     <header className="navbar">
       <div className="navbar-title">
@@ -9,7 +16,9 @@ function Navbar() {
       </div>
       <div className="navbar-user">
         <span className="user-name">Usuario Administrador</span>
-        <button className="logout-btn">Cerrar Sesión</button>
+        <button className="logout-btn" onClick={handleLogout}>
+          Cerrar Sesión
+        </button>
       </div>
     </header>
   );
