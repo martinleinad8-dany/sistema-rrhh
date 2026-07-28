@@ -2,22 +2,21 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 
-// Importamos la base de datos para que ejecute su verificación al arrancar
-const pool = require('./config/database');
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-// Middlewares
-app.use(cors()); // Permite peticiones desde el Frontend de React
-app.use(express.json()); // Permite procesar peticiones en formato JSON
+// Middlewares globales
+app.use(cors());
+app.use(express.json());
 
-// Ruta de prueba rápida de la API
-app.get('/api/saludo', (req, res) => {
-  res.json({ mensaje: '¡Servidor Express funcionando!' });
-});
+// Rutas de la API
+app.use('/api/auth', authRoutes);
 
-// Inicializar servidor
+// Puerto
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Servidor backend corriendo en http://localhost:${PORT}`);
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
+
+module.exports = app;
