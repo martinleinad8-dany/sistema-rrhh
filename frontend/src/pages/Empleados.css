@@ -1,0 +1,156 @@
+.empleados-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Header del Módulo */
+.modulo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.modulo-header h2 {
+  margin: 0;
+  color: #1b382b;
+  font-size: 1.5rem;
+}
+
+.modulo-header p {
+  margin: 4px 0 0 0;
+  color: #557c66;
+  font-size: 0.9rem;
+}
+
+/* Botón Principal (Verde DDI) */
+.btn-primario {
+  background-color: #2e7d32;
+  color: #ffffff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-primario:hover {
+  background-color: #1b5e20;
+}
+
+/* Toolbar de Búsqueda */
+.tabla-toolbar {
+  margin-bottom: 16px;
+}
+
+.input-busqueda {
+  width: 100%;
+  max-width: 380px;
+  padding: 9px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.input-busqueda:focus {
+  border-color: #2e7d32;
+  box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.15);
+}
+
+/* Tarjeta y Tabla */
+.tabla-card {
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+}
+
+.tabla-custom {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.tabla-custom th {
+  background-color: #f8fafc;
+  color: #475569;
+  font-weight: 600;
+  padding: 14px 16px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.tabla-custom td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #334155;
+}
+
+.font-bold {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+/* Badges de Estatus */
+.badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.badge.activo {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.badge.inactivo {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+/* Botones de Acción */
+.acciones {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-accion {
+  padding: 5px 10px;
+  border-radius: 4px;
+  border: 1px solid #cbd5e1;
+  background: white;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-editar:hover {
+  background-color: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+.btn-estado:hover {
+  background-color: #fff1f2;
+  border-color: #fecdd3;
+  color: #e11d48;
+}
+
+.sin-datos, .cargando {
+  text-align: center;
+  padding: 30px;
+  color: #64748b;
+}
+
+.mensaje-error {
+  background-color: #ffebee;
+  color: #c62828;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
