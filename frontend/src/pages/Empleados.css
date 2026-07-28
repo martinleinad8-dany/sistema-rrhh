@@ -41,9 +41,38 @@
   background-color: #1b5e20;
 }
 
-/* Toolbar de Búsqueda */
+.btn-primario:disabled {
+  background-color: #a5d6a7;
+  cursor: not-allowed;
+}
+
+/* Botón Secundario (Cancelar) */
+.btn-secundario {
+  background-color: #ffffff;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+  padding: 9px 16px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-secundario:hover {
+  background-color: #f8fafc;
+  border-color: #94a3b8;
+  color: #1e293b;
+}
+
+/* Toolbar de Búsqueda y Filtros */
 .tabla-toolbar {
   margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 .input-busqueda {
@@ -56,9 +85,30 @@
   outline: none;
 }
 
-.input-busqueda:focus {
+.input-busqueda:focus,
+.select-filtro:focus,
+.modal-form input:focus,
+.modal-form select:focus {
   border-color: #2e7d32;
   box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.15);
+}
+
+.filtro-estado {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: #475569;
+  font-weight: 500;
+}
+
+.select-filtro {
+  padding: 8px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  outline: none;
+  background-color: #ffffff;
 }
 
 /* Tarjeta y Tabla */
@@ -91,13 +141,24 @@
   color: #334155;
 }
 
+.text-right {
+  text-align: right;
+}
+
 .font-bold {
   font-weight: 600;
   color: #1e293b;
 }
 
+.subtexto {
+  font-size: 0.78rem;
+  color: #64748b;
+  margin-top: 2px;
+}
+
 /* Badges de Estatus */
 .badge {
+  display: inline-block;
   padding: 4px 10px;
   border-radius: 12px;
   font-size: 0.78rem;
@@ -118,6 +179,7 @@
 .acciones {
   display: flex;
   gap: 8px;
+  justify-content: flex-end;
 }
 
 .btn-accion {
@@ -133,6 +195,7 @@
 .btn-editar:hover {
   background-color: #f1f5f9;
   border-color: #94a3b8;
+  color: #1e293b;
 }
 
 .btn-estado:hover {
@@ -150,7 +213,109 @@
 .mensaje-error {
   background-color: #ffebee;
   color: #c62828;
-  padding: 10px;
+  padding: 10px 14px;
   border-radius: 6px;
   margin-bottom: 16px;
+  font-size: 0.88rem;
+  border: 1px solid #ffcdd2;
+}
+
+/* Estilos para el Modal (Crear / Editar) */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.modal-contenido {
+  background-color: #ffffff;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+.modal-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8fafc;
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: #1e293b;
+  font-size: 1.1rem;
+}
+
+.btn-cerrar {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 0;
+}
+
+.btn-cerrar:hover {
+  color: #334155;
+}
+
+.modal-form {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form-row {
+  display: flex;
+  gap: 12px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.form-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #475569;
+  text-transform: uppercase;
+}
+
+.modal-form input,
+.modal-form select {
+  padding: 9px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  outline: none;
+  background-color: #ffffff;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+  padding-top: 14px;
+  border-top: 1px solid #e2e8f0;
 }

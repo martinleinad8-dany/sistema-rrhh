@@ -1,18 +1,22 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { apiFetch } from '../services/api';
 import './Empleados.css';
 
 const Empleados = () => {
+  // Estados principales
   const [empleados, setEmpleados] = useState([]);
   const [busqueda, setBusqueda] = useState('');
+  const [filtroEstado, setFiltroEstado] = useState('Todos');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // Estados para el Modal (Crear / Editar)
+  // Estados del Modal (Crear / Editar)
   const [mostrarModal, setMostrarModal] = useState(false);
-  const [empleadoEditando, setEmpleadoEditando] = useState(null); // null = Crear, Objeto = Editar
+  const [empleadoEditando, setEmpleadoEditando] = useState(null);
   const [guardando, setGuardando] = useState(false);
   const [modalError, setModalError] = useState('');
+
+  // Estado del Formulario
   const [formData, setFormData] = useState({
     rut_dni: '',
     nombres: '',
@@ -22,28 +26,35 @@ const Empleados = () => {
     puesto: ''
   });
 
-  // 1. Cargar empleados desde MySQL
-  useEffect(() => {
-    obtenerEmpleados();
-  }, []);
-
-  const obtenerEmpleados = async () => {
+  // 1. Cargar empleados desde el backend
+  const cargarEmpleados = async () => {
     try {
       setLoading(true);
+      setError('');
       const response = await apiFetch('/empleados');
-      
+
       if (response && response.ok) {
         const data = await response.json();
         setEmpleados(data);
-        setError('');
       } else {
-        setError('No se pudieron cargar los empleados desde la base de datos.');
+        setError('No se pudo conectar con la base de datos de empleados.');
       }
     } catch (err) {
-      setError('Error de conexión con el servidor.');
+      console.error('Error al cargar empleados:', err);
+      setError('Error al conectar con el servidor.');
     } finally {
       setLoading(false);
     }
+  };
+
+  useEffect(() => {
+    cargarEmpleados();
+  }, []);
+
+  // Manejar inputs del formulario
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   // Abrir Modal para Crear
@@ -64,16 +75,10 @@ const Empleados = () => {
   // Abrir Modal para Editar
   const abrirModalEditar = (emp) => {
     setEmpleadoEditando(emp);
-    
-    // Separar nombre completo si viene concatenado de la BD
-    const partesNombre = (emp.nombre || '').split(' ');
-    const nombres = partesNombre[0] || '';
-    const apellidos = partesNombre.slice(1).join(' ') || '';
-
     setFormData({
       rut_dni: emp.rut_dni || '',
-      nombres: nombres,
-      apellidos: apellidos,
+      nombres: emp.nombres || '',
+      apellidos: emp.apellidos || '',
       email: emp.email || '',
       departamento: emp.departamento || 'TI',
       puesto: emp.puesto || ''
@@ -82,14 +87,7 @@ const Empleados = () => {
     setMostrarModal(true);
   };
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  // 2. Enviar datos (POST para crear, PUT para actualizar)
+  // 2. Guardar (POST / PUT)
   const handleSubmit = async (e) => {
     e.preventDefault();
     setModalError('');
@@ -113,7 +111,7 @@ const Empleados = () => {
 
       if (response && response.ok) {
         setMostrarModal(false);
-        obtenerEmpleados(); // Recargar lista de la base de datos
+        cargarEmpleados();
       } else {
         const data = await response.json();
         setModalError(data.mensaje || 'Error al procesar la solicitud.');
@@ -126,7 +124,7 @@ const Empleados = () => {
   };
 
   // 3. Cambiar estado (Activar / Desactivar)
-  const toggleEstado = async (emp) => {
+  const toggleEstadoEmpleado = async (emp) => {
     const estaActivo = emp.activo === 1 || emp.activo === true || emp.estado === 'Activo';
     const nuevoEstado = estaActivo ? 'Inactivo' : 'Activo';
 
@@ -138,54 +136,71 @@ const Empleados = () => {
       });
 
       if (response && response.ok) {
-        setEmpleados((prev) =>
-          prev.map((item) =>
-            item.id === emp.id
-              ? { ...item, activo: !estaActivo, estado: nuevoEstado }
-              : item
-          )
-        );
+        cargarEmpleados();
       } else {
         const data = await response.json();
-        alert(data.mensaje || 'Error al cambiar el estado del empleado.');
+        alert(data.mensaje || 'Error al cambiar el estado.');
       }
     } catch (err) {
-      alert('Error de conexión al intentar cambiar el estado.');
+      alert('Error de conexión al cambiar el estado.');
     }
   };
 
-  // 4. Filtrar empleados
-  const empleadosFiltrados = empleados.filter((emp) =>
-    emp.nombre?.toLowerCase().includes(busqueda.toLowerCase()) ||
-    emp.puesto?.toLowerCase().includes(busqueda.toLowerCase()) ||
-    emp.departamento?.toLowerCase().includes(busqueda.toLowerCase())
-  );
+  // 4. Filtros de búsqueda
+  const empleadosFiltrados = empleados.filter((emp) => {
+    const cumpleBusqueda =
+      emp.nombre?.toLowerCase().includes(busqueda.toLowerCase()) ||
+      emp.email?.toLowerCase().includes(busqueda.toLowerCase()) ||
+      emp.puesto?.toLowerCase().includes(busqueda.toLowerCase()) ||
+      emp.departamento?.toLowerCase().includes(busqueda.toLowerCase());
+
+    const estaActivo = emp.activo === 1 || emp.activo === true || emp.estado === 'Activo';
+    const cumpleEstado =
+      filtroEstado === 'Todos' ||
+      (filtroEstado === 'Activo' && estaActivo) ||
+      (filtroEstado === 'Inactivo' && !estaActivo);
+
+    return cumpleBusqueda && cumpleEstado;
+  });
 
   return (
     <div className="empleados-container">
-      {/* Cabecera del módulo */}
+      {/* Encabezado */}
       <div className="modulo-header">
         <div>
           <h2>Gestión de Empleados</h2>
-          <p>Administra la información de tu personal</p>
+          <p>Administra la información, cargos y estado del personal de la empresa.</p>
         </div>
         <button className="btn-primario" onClick={abrirModalCrear}>
           + Nuevo Empleado
         </button>
       </div>
 
-      {/* Barra de Búsqueda */}
+      {/* Barra de Búsqueda y Filtros */}
       <div className="tabla-toolbar">
         <input
           type="text"
-          placeholder="Buscar por nombre, puesto o departamento..."
+          placeholder="Buscar por nombre, correo, cargo..."
           value={busqueda}
           onChange={(e) => setBusqueda(e.target.value)}
           className="input-busqueda"
         />
+
+        <div className="filtro-estado">
+          <label>Estado: </label>
+          <select
+            value={filtroEstado}
+            onChange={(e) => setFiltroEstado(e.target.value)}
+            className="select-filtro"
+          >
+            <option value="Todos">Todos</option>
+            <option value="Activo">Activos</option>
+            <option value="Inactivo">Inactivos</option>
+          </select>
+        </div>
       </div>
 
-      {/* Mensaje de Error */}
+      {/* Mensaje de Error global */}
       {error && <div className="mensaje-error">{error}</div>}
 
       {/* Tabla de Empleados */}
@@ -196,12 +211,11 @@ const Empleados = () => {
           <table className="tabla-custom">
             <thead>
               <tr>
-                <th>Nombre</th>
-                <th>Puesto</th>
-                <th>Departamento</th>
-                <th>Correo</th>
-                <th>Estatus</th>
-                <th>Acciones</th>
+                <th>Empleado</th>
+                <th>Cargo / Departamento</th>
+                <th>Contacto</th>
+                <th>Estado</th>
+                <th className="text-right">Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -210,9 +224,14 @@ const Empleados = () => {
                   const esActivo = emp.activo === 1 || emp.activo === true || emp.estado === 'Activo';
                   return (
                     <tr key={emp.id}>
-                      <td className="font-bold">{emp.nombre}</td>
-                      <td>{emp.puesto}</td>
-                      <td>{emp.departamento}</td>
+                      <td>
+                        <div className="font-bold">{emp.nombre}</div>
+                        {emp.rut_dni && <div className="subtexto">RUT/DNI: {emp.rut_dni}</div>}
+                      </td>
+                      <td>
+                        <div>{emp.puesto}</div>
+                        <div className="subtexto">{emp.departamento}</div>
+                      </td>
                       <td>{emp.email}</td>
                       <td>
                         <span className={`badge ${esActivo ? 'activo' : 'inactivo'}`}>
@@ -220,7 +239,7 @@ const Empleados = () => {
                         </span>
                       </td>
                       <td className="acciones">
-                        <button 
+                        <button
                           className="btn-accion btn-editar"
                           onClick={() => abrirModalEditar(emp)}
                         >
@@ -228,7 +247,7 @@ const Empleados = () => {
                         </button>
                         <button
                           className="btn-accion btn-estado"
-                          onClick={() => toggleEstado(emp)}
+                          onClick={() => toggleEstadoEmpleado(emp)}
                         >
                           {esActivo ? 'Desactivar' : 'Activar'}
                         </button>
@@ -238,7 +257,7 @@ const Empleados = () => {
                 })
               ) : (
                 <tr>
-                  <td colSpan="6" className="sin-datos">
+                  <td colSpan="5" className="sin-datos">
                     No se encontraron empleados registrados.
                   </td>
                 </tr>
@@ -248,12 +267,12 @@ const Empleados = () => {
         )}
       </div>
 
-      {/* --- MODAL (CREAR / EDITAR) --- */}
+      {/* Modal de Crear / Editar */}
       {mostrarModal && (
         <div className="modal-overlay">
           <div className="modal-contenido">
             <div className="modal-header">
-              <h3>{empleadoEditando ? 'Editar Empleado' : 'Registrar Nuevo Empleado'}</h3>
+              <h3>{empleadoEditando ? 'Editar Empleado' : 'Nuevo Empleado'}</h3>
               <button className="btn-cerrar" onClick={() => setMostrarModal(false)}>
                 &times;
               </button>
@@ -262,6 +281,17 @@ const Empleados = () => {
             <form onSubmit={handleSubmit} className="modal-form">
               {modalError && <div className="mensaje-error">{modalError}</div>}
 
+              <div className="form-group">
+                <label>RUT / DNI</label>
+                <input
+                  type="text"
+                  name="rut_dni"
+                  value={formData.rut_dni}
+                  onChange={handleInputChange}
+                  placeholder="Ej: 12345678-9"
+                />
+              </div>
+
               <div className="form-row">
                 <div className="form-group">
                   <label>Nombres *</label>
@@ -269,9 +299,9 @@ const Empleados = () => {
                     type="text"
                     name="nombres"
                     value={formData.nombres}
-                    onChange={handleChange}
+                    onChange={handleInputChange}
+                    placeholder="Ej: Juan Antonio"
                     required
-                    placeholder="Ej. Ana"
                   />
                 </div>
                 <div className="form-group">
@@ -280,60 +310,50 @@ const Empleados = () => {
                     type="text"
                     name="apellidos"
                     value={formData.apellidos}
-                    onChange={handleChange}
+                    onChange={handleInputChange}
+                    placeholder="Ej: Pérez Gómez"
                     required
-                    placeholder="Ej. García"
                   />
                 </div>
               </div>
 
-              <div className="form-row">
-                <div className="form-group">
-                  <label>RUT / DNI</label>
-                  <input
-                    type="text"
-                    name="rut_dni"
-                    value={formData.rut_dni}
-                    onChange={handleChange}
-                    placeholder="12345678-9"
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Correo Electrónico *</label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    placeholder="ana@empresa.com"
-                  />
-                </div>
+              <div className="form-group">
+                <label>Correo Corporativo *</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  placeholder="ejemplo@empresa.com"
+                  required
+                />
               </div>
 
               <div className="form-row">
                 <div className="form-group">
-                  <label>Departamento</label>
+                  <label>Departamento *</label>
                   <select
                     name="departamento"
                     value={formData.departamento}
-                    onChange={handleChange}
+                    onChange={handleInputChange}
                   >
-                    <option value="Administración">Administración</option>
-                    <option value="Recursos Humanos">Recursos Humanos</option>
                     <option value="TI">TI</option>
+                    <option value="Recursos Humanos">Recursos Humanos</option>
                     <option value="Finanzas">Finanzas</option>
+                    <option value="Operaciones">Operaciones</option>
+                    <option value="Ventas">Ventas</option>
+                    <option value="Marketing">Marketing</option>
                   </select>
                 </div>
                 <div className="form-group">
-                  <label>Cargo / Puesto *</label>
+                  <label>Puesto / Cargo *</label>
                   <input
                     type="text"
                     name="puesto"
                     value={formData.puesto}
-                    onChange={handleChange}
+                    onChange={handleInputChange}
+                    placeholder="Ej: Desarrollador Frontend"
                     required
-                    placeholder="Ej. Desarrolladora"
                   />
                 </div>
               </div>
@@ -347,7 +367,7 @@ const Empleados = () => {
                   Cancelar
                 </button>
                 <button type="submit" className="btn-primario" disabled={guardando}>
-                  {guardando ? 'Guardando...' : empleadoEditando ? 'Actualizar Empleado' : 'Guardar Empleado'}
+                  {guardando ? 'Guardando...' : empleadoEditando ? 'Guardar Cambios' : 'Crear Empleado'}
                 </button>
               </div>
             </form>
