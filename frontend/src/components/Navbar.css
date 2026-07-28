@@ -20,13 +20,27 @@
   gap: 15px;
 }
 
+/* Agrupador de Nombre + Rol */
+.user-info {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+}
+
 .user-name {
   font-size: 0.9rem;
   color: #475569;
-  font-weight: 500;
+  font-weight: 600;
+  line-height: 1.2;
 }
 
-/* 👇 BOTÓN ACTUALIZADO AL VERDE DEL LOGIN 👇 */
+/* Estilo para el rol si existe en el usuario */
+.user-role {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+/* 👇 BOTÓN VERDE ESTILO LOGIN 👇 */
 .logout-btn {
   padding: 8px 14px;
   background-color: #2e7d32; /* Verde del botón de Iniciar Sesión */
