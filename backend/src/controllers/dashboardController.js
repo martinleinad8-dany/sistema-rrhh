@@ -1,14 +1,11 @@
-// 1. Asegúrate de que esta línea sea IDÉNTICA a la de tus otros controladores (ej. empleadosController.js)
-const pool = require('../config/database'); 
+const pool = require('../config/database');// Ajusta a '../db' si la conexión está en la raíz de src
 
 const obtenerMétricasDashboard = async (req, res) => {
   try {
     const fechaHoy = new Date().toISOString().split('T')[0];
 
     // 1. Total Empleados
-    const [resEmpleados] = await pool.query(
-      "SELECT COUNT(*) AS total FROM empleados"
-    );
+    const [resEmpleados] = await pool.query("SELECT COUNT(*) AS total FROM empleados");
 
     // 2. Permisos Pendientes
     let permisosPendientes = 0;
@@ -18,35 +15,34 @@ const obtenerMétricasDashboard = async (req, res) => {
       );
       permisosPendientes = resPermisos[0]?.pendientes || 0;
     } catch (e) {
-      console.log('Nota: No se pudo consultar permisos pendientes:', e.message);
+      console.log('Nota permisos:', e.message);
     }
 
-    // 3. Asistencia de Hoy
+    // 3. Asistencia de Hoy (usando la tabla "asistencias")
     let resAsistencia = [];
     try {
       const [rows] = await pool.query(
-        "SELECT estado, COUNT(*) AS cantidad FROM asistencia WHERE fecha = ? GROUP BY estado",
+        "SELECT estado, COUNT(*) AS cantidad FROM asistencias WHERE fecha = ? GROUP BY estado",
         [fechaHoy]
       );
       resAsistencia = rows;
     } catch (e) {
-      console.log('Nota: No se pudo consultar asistencia de hoy:', e.message);
+      console.log('Nota asistencias:', e.message);
     }
 
-    // 4. Próximos Contratos a Vencer
+    // 4. Próximos Contratos a Vencer (adaptado a nombres comunes de columna)
     let resContratosVencer = [];
     try {
       const [rows] = await pool.query(`
         SELECT c.*, CONCAT(e.nombres, ' ', e.apellidos) AS empleado_nombre 
         FROM contratos c
         INNER JOIN empleados e ON c.empleado_id = e.id
-        WHERE c.fecha_fin >= CURDATE()
-        ORDER BY c.fecha_fin ASC
+        ORDER BY c.id DESC
         LIMIT 5
       `);
       resContratosVencer = rows;
     } catch (e) {
-      console.log('Nota: No se pudo consultar contratos por vencer:', e.message);
+      console.log('Nota contratos:', e.message);
     }
 
     // 5. Últimas Solicitudes de Permisos
@@ -61,7 +57,7 @@ const obtenerMétricasDashboard = async (req, res) => {
       `);
       resUltimosPermisos = rows;
     } catch (e) {
-      console.log('Nota: No se pudo consultar últimos permisos:', e.message);
+      console.log('Nota permisos:', e.message);
     }
 
     res.json({
