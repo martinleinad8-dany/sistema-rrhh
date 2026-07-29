@@ -1,0 +1,23 @@
+.desempeno-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.badge-categoria {
+  background-color: #e3f2fd;
+  color: #1565c0;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.puntuacion-num {
+  font-weight: 700;
+  color: #2e7d32;
+}
+
+.texto-secundario {
+  color: #6b7280;
+}

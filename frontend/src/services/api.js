@@ -2,12 +2,16 @@
 export const apiFetch = async (endpoint, options = {}) => {
   const token = localStorage.getItem('token');
 
-  // Headers por defecto
+  // Construimos las cabeceras base
   const headers = {
-    'Content-Type': 'application/json',
     ...(token && { Authorization: `Bearer ${token}` }),
     ...options.headers,
   };
+
+  // Solo agregamos 'Content-Type': 'application/json' si hay un body y NO es FormData
+  if (options.body && !(options.body instanceof FormData) && !headers['Content-Type']) {
+    headers['Content-Type'] = 'application/json';
+  }
 
   try {
     const response = await fetch(`http://localhost:3000/api${endpoint}`, {
@@ -23,8 +27,10 @@ export const apiFetch = async (endpoint, options = {}) => {
       localStorage.removeItem('token');
       localStorage.removeItem('usuario');
 
-      // Redirigimos al Login
-      window.location.href = '/login';
+      // Redirigimos al Login solo si no estamos ya en /login (evita loops infinitos)
+      if (window.location.pathname !== '/login') {
+        window.location.href = '/login';
+      }
       return null;
     }
 
