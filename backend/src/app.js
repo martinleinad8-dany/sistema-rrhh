@@ -5,6 +5,7 @@ require('dotenv').config();
 const authRoutes = require('./routes/authRoutes');
 const empleadoRoutes = require('./routes/empleadoRoutes');
 const contratoRoutes = require('./routes/contratoRoutes'); // 1. Importamos la ruta de contratos
+const nominaRoutes = require('./routes/nominaRoutes');
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/empleados', empleadoRoutes);
 app.use('/api/contratos', contratoRoutes); // 2. Registramos el endpoint de contratos
+app.use('/api/nominas', nominaRoutes);
 
 // Puerto
 const PORT = process.env.PORT || 5000;
