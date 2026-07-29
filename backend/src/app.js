@@ -7,6 +7,7 @@ const empleadoRoutes = require('./routes/empleadoRoutes');
 const contratoRoutes = require('./routes/contratoRoutes'); // 1. Importamos la ruta de contratos
 const nominaRoutes = require('./routes/nominaRoutes');
 const asistenciaRoutes = require('./routes/asistenciaRoutes');
+const permisoRoutes = require('./routes/permisoRoutes');
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use('/api/empleados', empleadoRoutes);
 app.use('/api/contratos', contratoRoutes); // 2. Registramos el endpoint de contratos
 app.use('/api/nominas', nominaRoutes);
 app.use('/api/asistencias', asistenciaRoutes);
+app.use('/api/permisos', permisoRoutes);
 
 // Puerto
 const PORT = process.env.PORT || 5000;
