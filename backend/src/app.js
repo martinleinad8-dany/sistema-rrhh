@@ -3,7 +3,8 @@ const cors = require('cors');
 require('dotenv').config();
 
 const authRoutes = require('./routes/authRoutes');
-const empleadoRoutes = require('./routes/empleadoRoutes'); // 1. Importamos la nueva ruta
+const empleadoRoutes = require('./routes/empleadoRoutes');
+const contratoRoutes = require('./routes/contratoRoutes'); // 1. Importamos la ruta de contratos
 
 const app = express();
 
@@ -13,7 +14,8 @@ app.use(express.json());
 
 // Rutas de la API
 app.use('/api/auth', authRoutes);
-app.use('/api/empleados', empleadoRoutes); // 2. Registramos el endpoint de empleados
+app.use('/api/empleados', empleadoRoutes);
+app.use('/api/contratos', contratoRoutes); // 2. Registramos el endpoint de contratos
 
 // Puerto
 const PORT = process.env.PORT || 5000;
