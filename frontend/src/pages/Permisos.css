@@ -1,0 +1,59 @@
+.permisos-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.tipo-badge {
+  background-color: #f0f4f8;
+  color: #334e68;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* Badges de estado */
+.badge.pendiente {
+  background-color: #fff8e1;
+  color: #f57f17;
+}
+
+.badge.aprobado {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.badge.rechazado {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+/* Botones de acción rápida */
+.btn-accion-icono {
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 6px;
+  transition: transform 0.1s ease;
+}
+
+.btn-accion-icono:hover {
+  transform: scale(1.1);
+}
+
+.btn-aprobar {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.btn-rechazar {
+  background-color: #ffebee;
+  color: #c62828;
+}

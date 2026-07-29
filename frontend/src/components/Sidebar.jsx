@@ -36,6 +36,12 @@ function Sidebar() {
               📅 Asistencia
             </NavLink>
           </li>
+          {/* Nuevo ítem para Permisos y Vacaciones */}
+          <li>
+            <NavLink to="/permisos" className={({ isActive }) => (isActive ? 'active' : '')}>
+              📝 Permisos
+            </NavLink>
+          </li>
           <li>
             <NavLink to="/desempeno" className={({ isActive }) => (isActive ? 'active' : '')}>
               📊 Desempeño

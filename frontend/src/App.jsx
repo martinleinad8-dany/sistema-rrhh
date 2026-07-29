@@ -11,6 +11,7 @@ import Contratos from './pages/Contratos';
 import Nomina from './pages/Nomina';
 import Asistencia from './pages/Asistencia';
 import Desempeno from './pages/Desempeno';
+import Permisos from './pages/Permisos';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
                 <Route path="nomina" element={<Nomina />} />
                 <Route path="asistencia" element={<Asistencia />} />
                 <Route path="desempeno" element={<Desempeno />} />
+                <Route path="/permisos" element={<Permisos />} />
                 {/* Redirección por defecto al Dashboard */}
                 <Route path="*" element={<Navigate to="/dashboard" replace />} />
               </Routes>
