@@ -1,0 +1,31 @@
+.asistencia-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hora-texto {
+  font-family: monospace;
+  font-weight: bold;
+}
+
+/* Badges específicos de Asistencia */
+.badge.presente {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.badge.tarde {
+  background-color: #fff3e0;
+  color: #e65100;
+}
+
+.badge.ausente {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.badge.justificado {
+  background-color: #e3f2fd;
+  color: #1565c0;
+}
