@@ -1,105 +1,124 @@
-/* Contenedor principal que ocupa toda la pantalla y centra la tarjeta */
+/* Contenedor con el verde suave de fondo */
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  width: 100vw;
-  background-color: #b2d8b2; /* Fondo verde claro suave del sistema */
+  background-color: #a8d5b5;
+  padding: 20px;
   box-sizing: border-box;
 }
 
-/* Tarjeta flotante del Login (Altura compacta) */
+/* Tarjeta / Cuadro del Login ampliada */
 .login-card {
-  background-color: #ffffff;
-  padding: 20px 28px; /* Reducido el espacio vertical (arriba/abajo) */
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  background: #ffffff;
   width: 100%;
-  max-width: 320px;
-  text-align: center;
+  max-width: 480px; /* Tamaño amplio */
+  padding: 40px 45px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
 }
 
-/* Cabecera con Logo y Título */
+/* Encabezado */
 .login-header {
-  margin-bottom: 12px;
+  text-align: center;
+  margin-bottom: 25px;
 }
 
 .login-logo {
-  max-width: 110px; /* Reducida ligeramente la altura del logo */
+  max-width: 160px;
   height: auto;
-  margin-bottom: 6px;
-  object-fit: contain;
+  margin-bottom: 12px;
 }
 
 .login-header h2 {
-  margin: 0 0 4px 0;
-  color: #1b382b;
-  font-size: 1.3rem;
+  font-size: 1.8rem;
   font-weight: 700;
+  color: #0f172a;
+  margin: 8px 0 4px 0;
 }
 
 .login-header p {
+  font-size: 0.95rem;
+  color: #64748b; /* Gris neutro elegante */
   margin: 0;
-  color: #557c66;
-  font-size: 0.8rem;
+  font-weight: 500;
 }
 
-/* Formulario e Inputs */
-.login-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px; /* Reducida la separación entre campos */
-  text-align: left;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.form-group label {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #2d5442;
-}
-
-.form-group input {
-  padding: 8px 10px; /* Inputs más delgados */
-  border: 1px solid #cbd5e1;
-  border-radius: 6px;
+/* Mensajes de alerta */
+.login-error {
+  background-color: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  padding: 10px 14px;
+  border-radius: 8px;
   font-size: 0.88rem;
-  outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  box-sizing: border-box;
+  margin-bottom: 18px;
+  text-align: center;
+}
+
+/* Estructura del Formulario */
+.login-form {
   width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
-.form-group input:focus {
-  border-color: #2e7d32;
-  box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.15);
+.login-form .form-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Botón de Iniciar Sesión */
-.login-btn {
-  margin-top: 4px;
-  padding: 9px;
-  background-color: #2e7d32;
-  color: #ffffff;
-  border: none;
-  border-radius: 6px;
-  font-size: 0.9rem;
+.login-form label {
+  font-size: 0.8rem;
   font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s, transform 0.1s;
+  color: #4a5568;
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+}
+
+.login-form input {
   width: 100%;
+  padding: 12px 14px;
+  font-size: 0.95rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
 }
 
-.login-btn:hover {
-  background-color: #1b5e20;
+.login-form input:focus {
+  outline: none;
+  border-color: #2d7a3a;
+  box-shadow: 0 0 0 3px rgba(45, 122, 58, 0.15);
 }
 
-.login-btn:active {
-  transform: scale(0.99);
+/* BOTÓN: Ancho completo + Color verde de la imagen (#2d7a3a) */
+.login-card .btn-login,
+button.btn-login {
+  display: block !important;
+  width: 100% !important;
+  padding: 14px !important;
+  background-color: #2d7a3a !important; /* Verde exacto */
+  color: #ffffff !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  border: none !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  text-align: center !important;
+  margin-top: 10px !important;
+  box-sizing: border-box !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.login-card .btn-login:hover {
+  background-color: #23622e !important;
+}
+
+.login-card .btn-login:disabled {
+  background-color: #a0aec0 !important;
+  cursor: not-allowed !important;
 }

@@ -1,89 +1,103 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import logo from '../assets/Logo.png';
-import '../components/Login.css';
+import { apiFetch } from '../services/api';
+import "../components/Login.css";
+
+import logoDDI from '../assets/logo.png';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  // Estado local usando las claves que mapearemos al backend
+  const [formData, setFormData] = useState({ correo: '', contraseña: '' });
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setLoading(true);
+
+    // Mapeamos los datos enviando las propiedades estándar 'email' y 'password'
+    // (o 'correo' / 'password' según el requerimiento exacto de tu API)
+    const payload = {
+      email: formData.correo,
+      password: formData.contraseña,
+      // Si tu backend usa exactamente correo/password, descomenta la siguiente línea:
+      // correo: formData.correo,
+    };
 
     try {
-      const response = await fetch('http://localhost:3000/api/auth/login', {
+      const res = await apiFetch('/auth/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+        headers: { 
+          'Content-Type': 'application/json' 
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify(payload), // Mantenemos JSON.stringify para evitar "[object Object]"
       });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Error al iniciar sesión');
+      if (res && res.ok) {
+        const data = await res.json();
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('usuario', JSON.stringify(data.usuario));
+        navigate('/dashboard');
+      } else {
+        const errData = await res?.json();
+        setError(errData?.mensaje || errData?.message || 'Por favor, ingrese correo y contraseña.');
       }
-
-      // 💾 Guardar Token y datos del usuario
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('usuario', JSON.stringify(data.usuario));
-
-      // Redirigir al dashboard
-      navigate('/dashboard');
-
     } catch (err) {
-      setError(err.message);
+      console.error("Error en el envío:", err);
+      setError('Error al conectar con el servidor');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="login-container">
       <div className="login-card">
-        
-        {/* Cabecera con Logo y Títulos */}
         <div className="login-header">
-          <img src={logo} alt="DDI Software" className="login-logo" />
+          <img src={logoDDI} alt="DDI Software" className="login-logo" />
           <h2>Iniciar Sesión</h2>
           <p>Sistema de Gestión de Recursos Humanos</p>
         </div>
 
-        {error && <div className="error-message">{error}</div>}
+        {error && <div className="login-error">{error}</div>}
 
-        {/* Formulario */}
         <form onSubmit={handleSubmit} className="login-form">
           <div className="form-group">
-            <label htmlFor="email">Correo Electrónico</label>
+            <label htmlFor="correo">CORREO ELECTRÓNICO</label>
             <input
-              id="email"
               type="email"
+              id="correo"
+              name="correo"
+              value={formData.correo}
+              onChange={handleChange}
               placeholder="ejemplo@correo.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Contraseña</label>
+            <label htmlFor="contraseña">CONTRASEÑA</label>
             <input
-              id="password"
               type="password"
+              id="contraseña"
+              name="contraseña"
+              value={formData.contraseña}
+              onChange={handleChange}
               placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
 
-          <button type="submit" className="login-btn">
-            Iniciar Sesión
+          <button type="submit" className="btn-login" disabled={loading}>
+            {loading ? 'Ingresando...' : 'Iniciar Sesión'}
           </button>
         </form>
-
       </div>
     </div>
   );
